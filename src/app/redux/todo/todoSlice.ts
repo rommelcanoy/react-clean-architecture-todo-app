@@ -8,16 +8,8 @@ interface todoState {
 }
 
 const initialState: todoState = {
-  // list: typeof window !== "undefined" && localStorage.getItem("state") ? JSON.parse(localStorage.getItem('state')) : []
   list: [],
 }
-
-// export const fetchList = createAsyncThunk("todoSlice/fetchList", async () => {
-//   const plantRepo = new PlantsRepositoryImpl()
-//   const plantService = new PlantService(plantRepo)
-//   const plants = await plantService.GetPlants()
-//   return plants
-// })
 
 export const todoSlice = createSlice({
   name: 'counter',
@@ -56,14 +48,14 @@ export const todoSlice = createSlice({
       appState.list[index].text = action.payload.text;
       localStorage.setItem('state', JSON.stringify(state.list));
     },
-    fetchTodo: () => {
+    fetchTodo: (state) => {
+      const appState = state
+
       const todoRepo = new TodoRepositoryImpl()
       const todoService = new TodoService(todoRepo)
       const todo = todoService.GetTodo()
 
-      return {
-        list: todo
-      }
+      appState.list = todo
     }
   },
 })
