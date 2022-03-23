@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'
+import { addTodo } from '../../redux/todo/todoSlice';
 
 
 const TodoInput = ({ saveTodo }) => {
@@ -9,7 +10,7 @@ const TodoInput = ({ saveTodo }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (item !== '') {
-      dispatch(saveTodo({
+      dispatch(addTodo({
         text: item
       }));
       setItem('');

@@ -15,7 +15,7 @@ export const todoSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    saveTodo: (state, action) => {
+    addTodo: (state, action) => {
       const { text } = action.payload;
 
       const newTodo = {
@@ -28,39 +28,42 @@ export const todoSlice = createSlice({
         state.list.push(newTodo);
       }
 
-      localStorage.setItem('state', JSON.stringify(state.list));
-
+      todoSlice.caseReducers.storeLocalStorage(state)
     },
-    toggleComplete: (state, action) => {
-      const appState = state
+    completeTodo: (state, action) => {
       const index = state.list.findIndex((list) => list.id === action.payload.id);
-      appState.list[index].completed = action.payload.completed;
-      localStorage.setItem('state', JSON.stringify(state.list));
+      state.list[index].completed = action.payload.completed;
+
+      todoSlice.caseReducers.storeLocalStorage(state)
     },
     deleteTodo: (state, action) => {
-      const appState = state
-      appState.list = state.list.filter((item) => item.id !== action.payload.id)
-      localStorage.setItem('state', JSON.stringify(state.list));
+      state.list = state.list.filter((item) => item.id !== action.payload.id)
+
+      todoSlice.caseReducers.storeLocalStorage(state)
     },
     updateTodo: (state, action) => {
-      const appState = state
       const index = state.list.findIndex((obj) => obj.id === action.payload.id);
-      appState.list[index].text = action.payload.text;
-      localStorage.setItem('state', JSON.stringify(state.list));
+      state.list[index].text = action.payload.text;
+
+      todoSlice.caseReducers.storeLocalStorage(state)
     },
     fetchTodo: (state) => {
-      const appState = state
-
       const todoRepo = new TodoRepositoryImpl()
       const todoService = new TodoService(todoRepo)
       const todo = todoService.GetTodo()
-
-      appState.list = todo
+      state.list = todo
+    },
+    storeLocalStorage: (state) => {
+      console.log('reducer store to localstorage')
+      const todoRepo = new TodoRepositoryImpl()
+      const todoService = new TodoService(todoRepo)
+      const todo = todoService.SetTodo(state.list)
+      return todo
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { saveTodo, toggleComplete, deleteTodo, updateTodo, fetchTodo } = todoSlice.actions
+export const { completeTodo, deleteTodo, updateTodo, fetchTodo, addTodo } = todoSlice.actions
 
 export default todoSlice.reducer
