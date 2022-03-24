@@ -1,8 +1,6 @@
 export default class Todo {
   id: number
-
   text: string
-
   completed: boolean
 
   constructor(id: number, text: string, completed: boolean) {

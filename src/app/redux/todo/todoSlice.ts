@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import TodoRepositoryImpl from "../../../data/repositories/TodoRepositoryImpl"
 import Item from "../../../domain/entities/Todo"
 import TodoService from "../../../domain/usecases/TodoService"
+import TodoRepositoryImpl from "../../../data/repositories/TodoRepositoryImpl"
 
 interface todoState {
   list: Array<Item>
@@ -9,6 +9,20 @@ interface todoState {
 
 const initialState: todoState = {
   list: [],
+}
+
+const localStorage = (state, type: String) => {
+  const todoRepo = new TodoRepositoryImpl()
+  const todoService = new TodoService(todoRepo)
+  switch (type) {
+    case 'set':
+      todoService.SetTodo(state.list)
+    case 'get':
+      const todo = todoService.GetTodo()
+      state.list = todo
+    default:
+      return state
+  }
 }
 
 export const todoSlice = createSlice({
@@ -28,38 +42,25 @@ export const todoSlice = createSlice({
         state.list.push(newTodo);
       }
 
-      todoSlice.caseReducers.storeLocalStorage(state)
+      localStorage(state, 'set');
     },
     completeTodo: (state, action) => {
       const index = state.list.findIndex((list) => list.id === action.payload.id);
       state.list[index].completed = action.payload.completed;
-
-      todoSlice.caseReducers.storeLocalStorage(state)
+      localStorage(state, 'set');
     },
     deleteTodo: (state, action) => {
       state.list = state.list.filter((item) => item.id !== action.payload.id)
-
-      todoSlice.caseReducers.storeLocalStorage(state)
+      localStorage(state, 'set');
     },
     updateTodo: (state, action) => {
       const index = state.list.findIndex((obj) => obj.id === action.payload.id);
       state.list[index].text = action.payload.text;
-
-      todoSlice.caseReducers.storeLocalStorage(state)
+      localStorage(state, 'set');
     },
     fetchTodo: (state) => {
-      const todoRepo = new TodoRepositoryImpl()
-      const todoService = new TodoService(todoRepo)
-      const todo = todoService.GetTodo()
-      state.list = todo
+      localStorage(state, 'get');
     },
-    storeLocalStorage: (state) => {
-      console.log('reducer store to localstorage')
-      const todoRepo = new TodoRepositoryImpl()
-      const todoService = new TodoService(todoRepo)
-      const todo = todoService.SetTodo(state.list)
-      return todo
-    }
   },
 })
 
