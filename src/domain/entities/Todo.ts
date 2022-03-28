@@ -1,12 +1,11 @@
 export default class Todo {
-  id: number
+  timestamp: any
   text: string
   completed: boolean
 
-  constructor(id: number, text: string, completed: boolean) {
-    this.id = id
+  constructor(timestamp: any, text: string, completed: boolean) {
+    this.timestamp = timestamp
     this.text = text
     this.completed = completed
-
   }
 }

@@ -8,15 +8,32 @@ export default class TodoServiceImpl {
     this.todoRepo = todoRepo
   }
 
-  GetTodo(): Array<Todo> {
-    console.log('get todo service');
+  GetTodo(): Promise<Todo[]> {
     return this.todoRepo.GetTodo()
   }
 
-  SetTodo(todo: Array<Todo>) {
-    console.log('set todo service');
-    return this.todoRepo.SetTodo(todo)
+  async AddTodo(todo: any): Promise<Todo[]> {
+    return this.todoRepo.AddTodo(todo)
   }
+
+  async UpdateTodo(todo: any): Promise<Todo[]> {
+    return this.todoRepo.UpdateTodo(todo)
+  }
+
+  async DeleteTodo(id: any): Promise<Todo[]> {
+    return this.todoRepo.DeleteTodo(id)
+  }
+
+  async ToggleComplete(todo: any): Promise<Todo[]> {
+    return this.todoRepo.ToggleComplete(todo)
+  }
+
+
+
+  // SetTodo(todo: Array<Todo>) {
+  //   console.log('set todo service');
+  //   return this.todoRepo.SetTodo(todo)
+  // }
 
 }
 
