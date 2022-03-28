@@ -38,9 +38,10 @@ export const addTodoAsync = createAsyncThunk('todos/addTodoAsync', async (payloa
 });
 
 export const updateTodoAsync = createAsyncThunk('todos/updateTodoAsync', async (payload: any, { getState }) => {
-  const state = getState();
+  const state: any = getState();
 
-  const prevTodo = state.todo.list.find((list) => list.id === payload.id);
+  const prevTodo = state.todo.list.find((list: any) => list.id === payload.id);
+
   if (prevTodo.text !== payload.text) {
     const todoRepo = new TodoRepositoryImpl()
     const todoService = new TodoService(todoRepo)

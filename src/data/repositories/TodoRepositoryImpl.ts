@@ -15,7 +15,6 @@ export default class TodoRepositoryImpl implements TodoRepository {
             data.docs.map((doc: any) => this.todos.list.push(({ ...doc.data(), id: doc.id })))
         })
 
-        // return this;
         return this.todos.list
     }
 
