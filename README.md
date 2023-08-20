@@ -11,5 +11,5 @@ This is a simple Todo app built using React and Redux, integrated with Firebase 
 
 ## Clean Architecture
 
-The project is structured following the Clean Architecture principles to ensure a modular and maintainable codebase. It consists of the following layers:
+The project is structured following the Clean Architecture principles to ensure a modular and maintainable codebase.
 
